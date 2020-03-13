@@ -21,9 +21,6 @@ public class ServicioCliente {
 	private ServicioCliente() {
 	}
 
-	/**
-	 * @return a reference to an example facade for Customer objects.
-	 */
 	public static ServicioCliente getInstance() {
 		if (instance == null) {
 			instance = new ServicioCliente();
@@ -32,21 +29,10 @@ public class ServicioCliente {
 		return instance;
 	}
 
-	/**
-	 * @return all available Customer objects.
-	 */
 	public synchronized List<Cliente> findAll() {
 		return findAll(null);
 	}
 
-	/**
-	 * Finds all Customer's that match given filter.
-	 *
-	 * @param stringFilter
-	 *            filter that returned objects should match or null/empty string
-	 *            if all objects should be returned.
-	 * @return list a Customer objects
-	 */
 	public synchronized List<Cliente> findAll(String stringFilter) {
 		ArrayList<Cliente> arrayList = new ArrayList<>();
 		for (Cliente contact : contacts.values()) {
@@ -70,18 +56,6 @@ public class ServicioCliente {
 		return arrayList;
 	}
 
-	/**
-	 * Finds all Customer's that match given filter and limits the resultset.
-	 *
-	 * @param stringFilter
-	 *            filter that returned objects should match or null/empty string
-	 *            if all objects should be returned.
-	 * @param start
-	 *            the index of first result
-	 * @param maxresults
-	 *            maximum result count
-	 * @return list a Customer objects
-	 */
 	public synchronized List<Cliente> findAll(String stringFilter, int start, int maxresults) {
 		ArrayList<Cliente> arrayList = new ArrayList<>();
 		for (Cliente contact : contacts.values()) {
@@ -109,29 +83,14 @@ public class ServicioCliente {
 		return arrayList.subList(start, end);
 	}
 
-	/**
-	 * @return the amount of all customers in the system
-	 */
 	public synchronized long count() {
 		return contacts.size();
 	}
 
-	/**
-	 * Deletes a customer from a system
-	 *
-	 * @param value
-	 *            the Customer to be deleted
-	 */
 	public synchronized void delete(Cliente value) {
 		contacts.remove(value.getId());
 	}
 
-	/**
-	 * Persists or updates customer in the system. Also assigns an identifier
-	 * for new Customer instances.
-	 *
-	 * @param entry
-	 */
 	public synchronized void save(Cliente entry) {
 		if (entry == null) {
 			LOGGER.log(Level.SEVERE,
@@ -149,9 +108,6 @@ public class ServicioCliente {
 		contacts.put(entry.getId(), entry);
 	}
 
-	/**
-	 * Sample data generation
-	 */
 	public void ensureTestData() {
 		if (findAll().isEmpty()) {
 			final String[] names = new String[] { "Carlos Ortiz", "Esteban Bustos", "Rodrigo Aguayo","Omar Romero", "Jose Collio",
