@@ -51,6 +51,9 @@ public class MainView extends VerticalLayout {
 	private DatePicker dataPicker = new DatePicker();
 	private Select<String> placeholderSelect = new Select<>();
 	private TextArea textArea = new TextArea("Cuentanos sobre ti:");
+	
+	private List<PersonaW> listaPersonas = new ArrayList<>();
+	private Grid<PersonaW> grid = new Grid<>(PersonaW.class);
 
 	public MainView() {
 		
@@ -115,17 +118,7 @@ public class MainView extends VerticalLayout {
 		
 		//button.addClickListener(event -> dialog.open());
 		button.addClickListener(event -> capturarDatos());
-		
-//		FormLayout nameLayout = new FormLayout();
-//		nameLayout.setResponsiveSteps(new ResponsiveStep("33em",1), new ResponsiveStep("33em", 2), new ResponsiveStep("33em", 3));
-//		nameLayout.add(nameField, apellidoField, emailField, numberField, dataPicker, placeholderSelect, textArea,button);
-//		add(nameLayout);
-		
-//		HorizontalLayout nameLayout = new HorizontalLayout();
-//		nameLayout.getStyle().set("border", "1px solid #9E9E9E");
-//		nameLayout.add(nameField, apellidoField, emailField, numberField, dataPicker, placeholderSelect, textArea,button);
-//		add(nameLayout);
-		
+				
 		VerticalLayout nameLayout = new VerticalLayout();
 		nameLayout.getStyle().set("border", "1px solid #9E9E9E");
 		
@@ -139,7 +132,6 @@ public class MainView extends VerticalLayout {
 	public void capturarDatos() {
 		
 		Notification notification = new Notification("",3000);
-		
 		
 		if(nameField.getValue() == "" || nameField.getValue().isEmpty()) {
 			notification.setText("Debe ingresar su nombre");
@@ -169,6 +161,11 @@ public class MainView extends VerticalLayout {
 			persona.setFechaNacimiento(dataPicker.getValue());
 			persona.setCargo(placeholderSelect.getValue());
 			persona.setAbout(textArea.getValue());
+			
+			listaPersonas.add(persona);
+			grid.setItems(listaPersonas);
+			grid.setColumns("nombre","genero","email","edad","fechaNacimiento","cargo");
+			add(grid);
 				
 			System.out.println("Nombre: " + persona.getNombre());
 			System.out.println("Género: " + persona.getGenero());
