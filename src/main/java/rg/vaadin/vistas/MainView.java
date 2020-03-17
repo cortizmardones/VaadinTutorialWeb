@@ -3,13 +3,15 @@ package rg.vaadin.vistas;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
+
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -19,6 +21,7 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.PWA;
 import rg.vaadin.modelos.PersonaW;
@@ -44,6 +47,11 @@ public class MainView extends VerticalLayout {
 	private Grid<PersonaW> grid = new Grid<>(PersonaW.class);
 
 	public MainView() {
+		
+		MenuBar menuBar = new MenuBar();
+		Stream.of("Home", "Dashboard", "Content", "Structure", "Appearance",
+		        "Modules", "Users", "Configuration", "Reports", "Help")
+		        .forEach(menuBar::addItem);
 		
 		Label tituloLabel = new Label("Formulario de postulación:");
 
@@ -83,40 +91,23 @@ public class MainView extends VerticalLayout {
 		textArea.getStyle().set("maxHeight", "150px");
 		textArea.setPlaceholder("Escribé acá");
 		
-		Dialog dialog = new Dialog();
-		dialog.setCloseOnEsc(false);
-		dialog.setCloseOnOutsideClick(false);
-
-		Label messageLabel = new Label();
-
-		Button confirmButton = new Button("Confirmar", event -> {
-		    messageLabel.setText("Confirmado!");
-		    dialog.close();
-		});
-		Button cancelButton = new Button("Cancelar", event -> {
-		    messageLabel.setText("Cancelado!.");
-		    dialog.close();
-		});
-		confirmButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-		cancelButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
-		dialog.add(confirmButton, cancelButton);
-		
 		//Button button = new Button("Enviar");
 		button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		
 		//button.addClickListener(event -> dialog.open());
 		button.addClickListener(event -> capturarDatos());
-				
+						
 		//VerticalLayout nameLayout = new VerticalLayout();
 		nameLayout.getStyle().set("border", "1px solid #9E9E9E");
 		
 		//nameLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
 		nameLayout.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.STRETCH);
 		
-		nameLayout.add(tituloLabel,nameField,generoCheck, emailField, numberField, dataPicker, placeholderSelect, textArea,button);
+		nameLayout.add(menuBar,tituloLabel,nameField,generoCheck, emailField, numberField, dataPicker, placeholderSelect, textArea,button);
 		add(nameLayout);
 	}
 	
+
 	public void capturarDatos() {
 		
 		Notification notification = new Notification("",3000);
@@ -125,7 +116,7 @@ public class MainView extends VerticalLayout {
 			notification.setText("Debe ingresar su nombre");
 			notification.open();
 		}else if (emailField.getValue() == "" || emailField.getValue().isEmpty()) {
-			notification.setText("Debe ingresar su email");
+			notification.setText("Debe ingresar un email válido");
 			notification.open();
 		}else if(numberField.getValue() == null || numberField.getValue() < 18 || numberField.getValue() > 99) {
 			notification.setText("Debe ingresar una edad válida , el rango válido es entre 18 y 99 años");
@@ -140,6 +131,12 @@ public class MainView extends VerticalLayout {
 			notification.setText("Debes contarnos sobre tí");
 			notification.open();
 		}else {
+			
+			Button editButton = new Button("Editar");
+			editButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+			Button deleteButton = new Button("Eliminar");
+			deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
+		
 			PersonaW persona = new PersonaW();
 			persona.setNombre(nameField.getValue());
 			persona.setGenero(generoCheck.getValue());
@@ -149,11 +146,14 @@ public class MainView extends VerticalLayout {
 			persona.setFechaNacimiento(dataPicker.getValue());
 			persona.setCargo(placeholderSelect.getValue());
 			persona.setAbout(textArea.getValue());
-			
+	
 			listaPersonas.add(persona);
 			grid.setItems(listaPersonas);
 			grid.setColumns("nombre","genero","email","edad","fechaNacimiento","cargo");
-			add(grid);
+			
+		    grid.addComponentColumn(item -> createRemoveButton(grid, item)).setHeader("Opciones");
+			
+		    add(grid);
 			
 			//Vaciar los campos después de agregarlos a la grilla.
 			nameField.setValue("");
@@ -172,6 +172,17 @@ public class MainView extends VerticalLayout {
 			System.out.println("Comentarios: " + persona.getAbout());
 			System.out.println("");
 		}
+	}
+	
+	private Button createRemoveButton(Grid<PersonaW> grid, PersonaW item) {
+	    @SuppressWarnings("unchecked")
+	    Button button = new Button("Remove", clickEvent -> {
+	        ListDataProvider<PersonaW> dataProvider = (ListDataProvider<PersonaW>) grid
+	                .getDataProvider();
+	        dataProvider.getItems().remove(item);
+	        dataProvider.refreshAll();
+	    });
+	    return button;
 	}
 
 

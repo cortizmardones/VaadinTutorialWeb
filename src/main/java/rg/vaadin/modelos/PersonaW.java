@@ -2,6 +2,8 @@ package rg.vaadin.modelos;
 
 import java.time.LocalDate;
 
+import com.vaadin.flow.component.button.Button;
+
 public class PersonaW {
 	
     private int id;
@@ -94,6 +96,8 @@ public class PersonaW {
 		this.about = about;
 	}
 
+
+	
     
 
 }
