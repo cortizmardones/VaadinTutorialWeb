@@ -2,30 +2,16 @@ package rg.vaadin.vistas;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.checkbox.Checkbox;
-import com.vaadin.flow.component.checkbox.CheckboxGroup;
-import com.vaadin.flow.component.checkbox.CheckboxGroupVariant;
-import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.html.NativeButton;
-import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.select.Select;
@@ -33,7 +19,6 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.internal.ResponseWriter;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.PWA;
 import rg.vaadin.modelos.PersonaW;
@@ -158,7 +143,7 @@ public class MainView extends VerticalLayout {
 			PersonaW persona = new PersonaW();
 			persona.setNombre(nameField.getValue());
 			persona.setGenero(generoCheck.getValue());
-			persona.setEmail(emailField.getValue());
+			persona.setEmail(emailField.getValue().toLowerCase());
 			//Tuve que castear por que numberField.getValue devuelve un Double
 			persona.setEdad((int)Math.round(numberField.getValue()));
 			persona.setFechaNacimiento(dataPicker.getValue());
@@ -173,7 +158,8 @@ public class MainView extends VerticalLayout {
 			//Vaciar los campos después de agregarlos a la grilla.
 			nameField.setValue("");
 			generoCheck.setValue("Hombre");
-			//emailField.setValue("@");
+			emailField.setValue("example@email.com");
+			//emailField.clear();
 			numberField.setValue(18.0);
 			textArea.setValue("");
 				
