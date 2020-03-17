@@ -166,6 +166,12 @@ public class MainView extends VerticalLayout {
 			grid.setItems(listaPersonas);
 			grid.setColumns("nombre","genero","email","edad","fechaNacimiento","cargo");
 			add(grid);
+			
+			//Vaciar los campos después de agregarlos a la grilla.
+			nameField.setValue("");
+			//emailField.setValue("@");
+			numberField.setValue(18.0);
+			textArea.setValue("");
 				
 			System.out.println("Nombre: " + persona.getNombre());
 			System.out.println("Género: " + persona.getGenero());
