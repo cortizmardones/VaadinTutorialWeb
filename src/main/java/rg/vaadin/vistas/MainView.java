@@ -39,7 +39,7 @@ public class MainView extends VerticalLayout {
 	private DatePicker dataPicker = new DatePicker();
 	private Select<String> placeholderSelect = new Select<>();
 	private TextArea textArea = new TextArea("Cuentanos sobre ti:");
-	private Button button = new Button("Enviar");
+	private Button button = new Button("Agregar");
 	
 	private VerticalLayout nameLayout = new VerticalLayout();
 	
@@ -132,11 +132,6 @@ public class MainView extends VerticalLayout {
 			notification.open();
 		}else {
 			
-			Button editButton = new Button("Editar");
-			editButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-			Button deleteButton = new Button("Eliminar");
-			deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
-		
 			PersonaW persona = new PersonaW();
 			persona.setNombre(nameField.getValue());
 			persona.setGenero(generoCheck.getValue());
@@ -176,7 +171,7 @@ public class MainView extends VerticalLayout {
 	
 	private Button createRemoveButton(Grid<PersonaW> grid, PersonaW item) {
 	    @SuppressWarnings("unchecked")
-	    Button button = new Button("Remove", clickEvent -> {
+	    Button button = new Button("Eliminar", clickEvent -> {
 	        ListDataProvider<PersonaW> dataProvider = (ListDataProvider<PersonaW>) grid
 	                .getDataProvider();
 	        dataProvider.getItems().remove(item);
