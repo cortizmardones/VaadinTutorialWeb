@@ -51,6 +51,9 @@ public class MainView extends VerticalLayout {
 	private DatePicker dataPicker = new DatePicker();
 	private Select<String> placeholderSelect = new Select<>();
 	private TextArea textArea = new TextArea("Cuentanos sobre ti:");
+	private Button button = new Button("Enviar");
+	
+	private VerticalLayout nameLayout = new VerticalLayout();
 	
 	private List<PersonaW> listaPersonas = new ArrayList<>();
 	private Grid<PersonaW> grid = new Grid<>(PersonaW.class);
@@ -113,13 +116,13 @@ public class MainView extends VerticalLayout {
 		cancelButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
 		dialog.add(confirmButton, cancelButton);
 		
-		Button button = new Button("Enviar");
+		//Button button = new Button("Enviar");
 		button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		
 		//button.addClickListener(event -> dialog.open());
 		button.addClickListener(event -> capturarDatos());
 				
-		VerticalLayout nameLayout = new VerticalLayout();
+		//VerticalLayout nameLayout = new VerticalLayout();
 		nameLayout.getStyle().set("border", "1px solid #9E9E9E");
 		
 		//nameLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
@@ -169,6 +172,7 @@ public class MainView extends VerticalLayout {
 			
 			//Vaciar los campos después de agregarlos a la grilla.
 			nameField.setValue("");
+			generoCheck.setValue("Hombre");
 			//emailField.setValue("@");
 			numberField.setValue(18.0);
 			textArea.setValue("");
